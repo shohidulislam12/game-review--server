@@ -23,9 +23,9 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-  //  await client.connect();
+    await client.connect();
     // Send a ping to confirm a successful connection
-   // await client.db("admin").command({ ping: 1 });
+    await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
     const database = client.db("insertDB").collection("review");
     const likedreview = client.db("insertDB").collection("liked");
@@ -85,7 +85,13 @@ app.get('/liked/games',async(req,res)=>{
 //get review
 app.get('/addreview',async(req,res)=>{
     const result=await database.find().toArray()
-
+    res.send(result)
+})
+//get review as  categori
+app.get('/addreview/:genreslist',async(req,res)=>{
+  const genreslist=req.params.genreslist
+  const query={genreslist:genreslist}
+    const result=await database.find(query).toArray()
     res.send(result)
 })
 //
